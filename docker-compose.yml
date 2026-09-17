@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: .
+    environment:
+      GRIDUP_PANEL_COUNT: 10
+      GRIDUP_TICK_SECONDS: 1.0
+      GRIDUP_SIMULATION_SPEED: 120.0
+      GRIDUP_DATABASE_PATH: /app/data/gridup.db
+      GRIDUP_MODBUS_ENABLED: "true"
+      GRIDUP_MODBUS_HOST: 0.0.0.0
+      GRIDUP_MODBUS_PORT: 1502
+      GRIDUP_CORS_ORIGINS: http://localhost:8080
+    ports:
+      - "8000:8000"
+      - "1502:1502"
+    volumes:
+      - gridup-data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+volumes:
+  gridup-data:
+
