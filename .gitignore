@@ -11,3 +11,8 @@ frontend/vite.config.js
 frontend/vite.config.d.ts
 *.tsbuildinfo
 coverage/
+firmware/build/
+tmp/
+.codex-finalizer/
+output/presentation/*-final.pptx
+output/presentation/*-r2.pptx

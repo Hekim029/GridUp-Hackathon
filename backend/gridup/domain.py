@@ -56,11 +56,21 @@ class PanelTelemetry(BaseModel):
     scenario: Scenario
     scenario_progress: float = Field(ge=0, le=1)
     currents_a: PhaseValues
+    current_data_source: str
+    current_profile_index: int | None = Field(default=None, ge=0)
+    current_profile_elapsed_minutes: int | None = Field(default=None, ge=0)
+    current_profile_clock: str | None = None
+    source_secondary_current_ma: float | None = Field(default=None, ge=0, le=100)
+    source_current_multiplier: float | None = Field(default=None, gt=0)
     neutral_current_a: float = Field(ge=0)
     phase_voltages_v: PhaseValues
     line_voltages_v: PhaseValues
     busbar_temperatures_c: PhaseValues
     expected_temperatures_c: PhaseValues
+    thermal_residual_k: float
+    residual_z_score: float = Field(ge=0)
+    residual_anomaly_score: float = Field(ge=0, le=100)
+    residual_reference_samples: int = Field(ge=0)
     ambient_temperature_c: float
     cold_surface_temperature_c: float
     relative_humidity_pct: float = Field(ge=0, le=100)

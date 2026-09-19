@@ -5,7 +5,14 @@ from .physics import PanelPhysicalParameters
 
 
 def severity_for(score: float) -> Severity:
-    # model_assumption: provisional, must be calibrated with field evidence.
+    """Map a continuous composite risk score [0, 100] to discrete severity levels.
+
+    Threshold Tiers:
+    - [80, 100]: CRITICAL (immediate intervention, trip or severe condensation).
+    - [55, 80):  WARNING (abnormal trending, feeder overload, thermal imbalance).
+    - [25, 55):  WATCH (minor baseline deviation, preliminary HFCT indicator).
+    - [0, 25):   NORMAL (healthy physical and electrical operation).
+    """
     if score >= 80:
         return Severity.CRITICAL
     if score >= 55:
@@ -16,6 +23,12 @@ def severity_for(score: float) -> Severity:
 
 
 def _thermal_finding(t: PanelTelemetry, p: PanelPhysicalParameters) -> ExpertFinding:
+    """Evaluate thermal and current loading anomalies using physics-informed thresholds.
+
+    Evaluates busbar thermal residuals, first-difference Z-score anomalies, feeder
+    loading ratios, and phase imbalances. Prioritizes physical loose contact indicators
+    over pure overcurrent loading.
+    """
     currents = t.currents_a.values()
     temperatures = t.busbar_temperatures_c.values()
     expected = t.expected_temperatures_c.values()
@@ -34,6 +47,7 @@ def _thermal_finding(t: PanelTelemetry, p: PanelPhysicalParameters) -> ExpertFin
         max(0.0, (feeder_loading - 0.80) / 0.40) * 100.0,
         max(0.0, (imbalance - 0.10) / 0.25) * 70.0,
         max(0.0, residual / 35.0) * 85.0,
+        t.residual_anomaly_score * 0.80,
     )
     score = min(score, 100.0)
 
@@ -43,6 +57,10 @@ def _thermal_finding(t: PanelTelemetry, p: PanelPhysicalParameters) -> ExpertFin
         action = (
             "İlgili faz bağlantısını planlı ve güvenli bakımda termal/temas açısından kontrol et"
         )
+    elif t.residual_anomaly_score >= 75.0:
+        code = "THERMAL_RESIDUAL_STATISTICAL"
+        cause = "Fiziksel sıcaklık artığı kendi yakın geçmişinden istatistiksel olarak saptı"
+        action = "Artık trendini izle; devam ederse bağlantıyı planlı bakımda doğrula"
     elif feeder_loading >= 1.0:
         code = "FEEDER_OVERLOAD"
         cause = "En az bir çıkış fideri seçili 400 A nominal değeri aşıyor"
@@ -70,6 +88,9 @@ def _thermal_finding(t: PanelTelemetry, p: PanelPhysicalParameters) -> ExpertFin
             f"maksimum fider yük oranı={feeder_loading:.3f}",
             f"faz dengesizliği={imbalance:.3f}",
             f"maksimum termal artık={residual:.1f} K",
+            f"residual Z-skoru={t.residual_z_score:.2f}",
+            f"istatistiksel anomali skoru={t.residual_anomaly_score:.1f}/100",
+            f"referans örnek sayısı={t.residual_reference_samples}",
         ],
         likely_cause=cause,
         recommended_action=action,
@@ -77,9 +98,14 @@ def _thermal_finding(t: PanelTelemetry, p: PanelPhysicalParameters) -> ExpertFin
 
 
 def _environment_finding(t: PanelTelemetry) -> ExpertFinding:
+    """Assess enclosure condensation and insulation breakdown risks via dew-point margin.
+
+    Rules evaluate the temperature delta between the coldest surface and the thermodynamic
+    dew point. Margins below zero indicate active condensation and lock the severity to CRITICAL.
+    """
     margin = t.condensation_margin_k
-    # model_assumption: dew-point margin bands are provisional demo rules.
     score = min(100.0, max(0.0, (10.0 - margin) / 10.0 * 90.0))
+
     if margin <= 0:
         code = "CONDENSATION"
         cause = "Yüzey sıcaklığı çiy noktasında veya altında"
@@ -92,6 +118,7 @@ def _environment_finding(t: PanelTelemetry) -> ExpertFinding:
         code = "ENVIRONMENT_NORMAL"
         cause = "Yoğuşma marjı yeterli"
         action = "İzlemeye devam et"
+
     return ExpertFinding(
         expert="environment_insulation",
         score=round(score, 1),
@@ -109,6 +136,12 @@ def _environment_finding(t: PanelTelemetry) -> ExpertFinding:
 
 
 def _dielectric_finding(t: PanelTelemetry) -> ExpertFinding:
+    """Process optical arc guard states and high-frequency current transformer indicators.
+
+    Optical arc detection triggers instant maximum risk (100.0), distinguishing between
+    tripped breakers and un-tripped sensor alerts. HFCT partial discharge activity provides
+    an indicative risk score subject to field calibration.
+    """
     if t.arc_tripped:
         return ExpertFinding(
             expert="dielectric_safety",
@@ -142,7 +175,6 @@ def _dielectric_finding(t: PanelTelemetry) -> ExpertFinding:
             ),
         )
 
-    # HFCT signal is an indicator only; this MVP does not claim calibrated pC measurement.
     score = min(60.0, max(0.0, (t.pd_apparent_charge_pc - 20.0) / 80.0 * 60.0))
     return ExpertFinding(
         expert="dielectric_safety",
@@ -161,6 +193,11 @@ def _dielectric_finding(t: PanelTelemetry) -> ExpertFinding:
 
 
 def assess(t: PanelTelemetry, params: PanelPhysicalParameters) -> RiskAssessment:
+    """Synthesize multi-expert domain findings into an explainable overall risk score.
+
+    Applies non-linear risk compounding where secondary and tertiary degraded factors
+    amplify the dominant risk score without artificially exceeding 100.0.
+    """
     findings = [
         _thermal_finding(t, params),
         _environment_finding(t),

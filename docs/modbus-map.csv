@@ -24,3 +24,9 @@ GridUp,2*n-1,10010,10011,maximum feeder loading ratio,R,ratio*1000,custom
 GridUp,2*n-1,10011,10012,arc detected without breaker trip,R,0/1,custom
 GridUp,2*n-1,10012,10013,arc detected with breaker trip,R,0/1,custom
 GridUp,2*n-1,10013,10014,auxiliary supply voltage,R,V*10,custom
+GridUp,2*n-1,10014,10015,thermal residual,R,(K+50)*10,custom
+GridUp,2*n-1,10015,10016,residual z-score,R,z*100,custom
+GridUp,2*n-1,10016,10017,residual anomaly score,R,0-100*10,custom
+GridUp,2*n-1,10017,10018,competition profile row index,R,0-151,custom
+GridUp,2*n-1,10018,10019,source secondary current,R,mA*10,custom
+GridUp,2*n-1,10019,10020,profile elapsed time,R,minutes,custom

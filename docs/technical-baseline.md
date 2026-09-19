@@ -13,6 +13,7 @@
 | Besleme çıkışı | 5 + 2 yedek | source | 1600kVA AG Pano Teknik Özellikleri.pdf |
 | Seçili DSYA varyantı | 400 A | source/model selection | Teknik tabloda 250 A ve 400 A seçenekleri; MVP 400 A'yı seçer |
 | Örnek sensör dönüşümü | 100 mA → 600 A | source | İstenen Veriler.xlsx |
+| Yarışma akım profili | 152 nokta, 15 dakika, 90-540 A | source | İstenen Veriler.xlsx / `Akım Sensörü`, satır 7-158 |
 | Yardımcı güç | 24 V DC | jury_answer | Modem beslemesi için panoda mevcut olduğu doğrulandı |
 
 ## Fizik modeli
@@ -84,6 +85,11 @@ Bu değerler veritabanı veya model çıktısı olarak “ölçülmüş gerçek�
 Hem yalnız algılamalı ark hem kesici açtırmalı ark birleşik riski 100/Kritik yapar. Diğer durumlarda en yüksek tekil skor taban alınır; ikincil bulgular yalnızca yukarı yönlü sınırlı katkı verir. Böylece tek başına kritik bir termal veya çevresel bulgu ağırlıklı ortalama içinde seyrelmez.
 
 HFCT aktivitesi nem girişinin zorunlu sonucu sayılmaz. Nem senaryosu yalnızca küçük bir sentetik korelasyon taşır; eşik davranışı bağımsız `pd_activity` senaryosuyla test edilir. Etiketli gerçek arıza verisi gizlilik nedeniyle bulunmadığından Isolation Forest gibi öğrenen modeller ve doğruluk/F1 iddiaları kalibrasyon fazına bırakılmıştır.
+
+Termal uzman ayrıca önceki 30 fiziksel sıcaklık artığına göre çevrimiçi Z-skoru üretir.
+En az 12 geçmiş örnek olmadan istatistiksel skor devreye girmez; standart sapma alt sınırı
+0,1 K ve dört Z-skorunda 100 puan seçimi `model_assumption` değerleridir. Bu, eğitilmiş
+bir sınıflandırıcı değil açıklanabilir residual istatistiğidir.
 
 ## Jüri cevaplarıyla netleşen sınırlar
 

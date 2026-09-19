@@ -20,11 +20,33 @@ projesiyle doğrulanmadan donanım seçimi kesinleştirilmez.
 ## Veri yolları
 
 - MPR-53CS ve TVOC-2 kaynak alanları üretici Modbus adreslerinde korunur.
+- Mevcut cihazların Modbus/RS-485 verisini yeniden kullanmak, her büyüklük için yeni
+  bir saha kablosu çekmek yerine ortak ve adreslenmiş veri yolu yaklaşımı sağlar.
 - Sıcaklık, nem, HFCT göstergesi ve birleşik risk üreticiden bağımsız özel blokta taşınır.
 - SCADA entegrasyonunun teslim girdisi `modbus-map.csv` dosyasıdır.
 - Yerel ark koruması ağ veya uygulama gecikmesine bağımlı değildir; yazılım yalnızca
   olay ve açma durumunu raporlar.
 - Dashboard zorunlu değildir; demo ve mühendislik görünümü olarak opsiyoneldir.
+
+## Kablo kalabalığı ve güvenli kurulum ilkesi
+
+Şartname, pano içi küçük bir çalışmanın dahi hayati risk ve planlı kesinti doğurabileceğini
+belirtir. Bu nedenle çözüm **enerjili panoda sıfır kesintiyle montaj** iddiasında bulunmaz.
+Savunulan yaklaşım şudur:
+
+- mevcut MPR-53CS ve TVOC-2 Modbus verisini mümkün olduğunca yeniden kullanmak,
+- yeni modülü kontrol/modem bölgesindeki korumalı DIN-ray alanında tek gövde olarak
+  konumlandırmak; kesin yer ve boşluk için enerjisiz saha keşfi yapmak,
+- yeni analog/sıcaklık/HFCT hatlarını güç iletkenlerinden ayrılmış, etiketli ve sökülebilir
+  terminallerle minimumda tutmak,
+- kurulum ve bakım adımlarını kurum prosedürüne uygun planlı, enerjisiz çalışma olarak
+  gerçekleştirmek,
+- bir sensör veya haberleşme arızasının yerel TVOC koruma zincirini devre dışı bırakmamasını
+  sağlamak.
+
+Yarışma kaynakları, akım ölçümü için belirli bir split-core ürün veya bara sıcaklığı için
+manyetik/IR ürün modeli vermemiştir. Bu seçenekler saha pilotunda değerlendirilebilir; mevcut
+teslimde satın alınmış, doğrulanmış veya enerjili montaja uygun bileşen gibi sunulmaz.
 
 ## Örnekleme ve gecikme
 

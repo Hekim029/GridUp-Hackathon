@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker>
+    <style>.t{font:700 34px Arial;fill:#0f172a}.s{font:17px Arial;fill:#475569}.h{font:700 19px Arial;fill:#0f172a}.b{font:16px Arial;fill:#334155}.x{font:14px Arial;fill:#64748b}.box{fill:#f8fafc;stroke:#475569;stroke-width:2}.p{fill:#fef3c7;stroke:#d97706;stroke-width:3}.i{fill:#ecfeff;stroke:#0891b2;stroke-width:3}.l{fill:#eef2ff;stroke:#4f46e5;stroke-width:3}.o{fill:#ecfdf5;stroke:#059669;stroke-width:3}.line{stroke:#334155;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="1500" height="900" fill="white"/>
+  <text x="60" y="62" class="t">GridUp kabin ici izleme modulu elektronik blok semasi</text>
+  <text x="60" y="95" class="s">Hackathon prototip seviyesi - saha PCB uretimi ve uygunluk testleri kapsam disi</text>
+
+  <rect x="55" y="150" width="270" height="110" rx="10" class="p"/><text x="85" y="190" class="h">24 V DC yardimci hat</text><text x="85" y="222" class="b">Sigorta + ters polarite + giris koruma</text>
+  <rect x="385" y="150" width="260" height="110" rx="10" class="p"/><text x="420" y="190" class="h">Izole DC/DC</text><text x="420" y="222" class="b">24 V -> 5 V -> 3,3 V</text>
+  <rect x="720" y="135" width="310" height="140" rx="10" class="l"/><text x="765" y="180" class="h">Saha veri toplama kontrolu</text><text x="765" y="212" class="b">Tasinabilir C cekirdegi</text><text x="765" y="240" class="x">STM32 veya ESP32 sinifi hedef</text>
+  <path d="M325 205 L385 205" class="line"/><path d="M645 205 L720 205" class="line"/>
+
+  <rect x="55" y="340" width="260" height="120" rx="10" class="i"/><text x="80" y="378" class="h">0-100 mA analog giris</text><text x="80" y="410" class="b">Koruma + shunt + filtre + ADC</text><text x="80" y="438" class="x">100 mA = 600 A kaynak donusumu</text>
+  <rect x="55" y="500" width="260" height="110" rx="10" class="i"/><text x="80" y="540" class="h">Sicaklik ve nem</text><text x="80" y="572" class="b">Dijital/analog sensor arayuzu</text>
+  <rect x="55" y="650" width="260" height="120" rx="10" class="i"/><text x="80" y="688" class="h">HFCT 30/50</text><text x="80" y="720" class="b">50 ohm sonlandirma + on uc</text><text x="80" y="748" class="x">Kalibrasyonsuz aktivite gostergesi</text>
+
+  <rect x="390" y="350" width="255" height="105" rx="10" class="i"/><text x="420" y="388" class="h">MPR-53CS</text><text x="420" y="420" class="b">Akım, gerilim, guc, frekans</text>
+  <rect x="390" y="515" width="255" height="105" rx="10" class="i"/><text x="420" y="553" class="h">TVOC-2-COM</text><text x="420" y="585" class="b">Ark detektoru ve trip rolesi</text>
+  <rect x="720" y="360" width="310" height="110" rx="10" class="l"/><text x="760" y="400" class="h">Izole RS-485 arayuzu</text><text x="760" y="432" class="b">Modbus RTU iki telli A/B</text>
+  <path d="M315 400 L350 400 L350 300 L690 300 L690 225 L720 225" class="line"/>
+  <path d="M315 555 L335 555 L335 290 L680 290 L680 245 L720 245" class="line"/>
+  <path d="M315 710 L320 710 L320 280 L670 280 L670 265 L720 265" class="line"/>
+  <path d="M645 402 L720 402" class="line"/><path d="M645 567 L685 567 L685 438 L720 438" class="line"/><path d="M875 360 L875 275" class="line"/>
+
+  <rect x="1110" y="155" width="320" height="120" rx="10" class="o"/><text x="1155" y="195" class="h">Endustriyel modem / ag gecidi</text><text x="1155" y="227" class="b">SCADA veya on-premise sunucu</text>
+  <rect x="1110" y="350" width="320" height="110" rx="10" class="o"/><text x="1155" y="390" class="h">Yerel servis ve durum</text><text x="1155" y="422" class="b">Watchdog, heartbeat, durum LED'i</text>
+  <rect x="1110" y="535" width="320" height="125" rx="10" class="o"/><text x="1155" y="575" class="h">Alarm cikisi</text><text x="1155" y="607" class="b">Modbus register + olay kuyrugu</text><text x="1155" y="635" class="x">TVOC koruma zincirine kumanda etmez</text>
+  <path d="M1030 205 L1110 205" class="line"/><path d="M1030 230 L1070 230 L1070 405 L1110 405" class="line"/><path d="M1030 250 L1050 250 L1050 598 L1110 598" class="line"/>
+
+  <rect x="390" y="735" width="640" height="90" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="420" y="770" class="h">Tasarim karari</text>
+  <text x="420" y="800" class="b">MAX485 yalniz masaustu prototipi icin dusunulebilir. Saha kartinda izole RS-485 ve ayrik guc bolgesi gerekir.</text>
+</svg>

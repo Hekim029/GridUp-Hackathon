@@ -21,6 +21,10 @@ def test_mpr_current_scaling_uses_source_multiplier_and_ct_ratio() -> None:
     registers = mpr_registers(snapshot)
     decoded_current = u32(registers, 6) * 0.001 * 500.0
     assert abs(decoded_current - snapshot.telemetry.currents_a.l1) <= 0.25
+    assert registers[10_017] == 0
+    assert registers[10_018] == 530
+    assert registers[10_019] == 0
+    assert registers[10_016] == round(snapshot.telemetry.residual_anomaly_score * 10)
 
 
 def test_tvoc_detect_only_sets_event_and_detector_without_relay() -> None:

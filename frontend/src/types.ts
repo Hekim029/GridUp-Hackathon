@@ -32,11 +32,21 @@ export interface PanelSnapshot {
     scenario: Scenario;
     scenario_progress: number;
     currents_a: PhaseValues;
+    current_data_source: string;
+    current_profile_index: number | null;
+    current_profile_elapsed_minutes: number | null;
+    current_profile_clock: string | null;
+    source_secondary_current_ma: number | null;
+    source_current_multiplier: number | null;
     neutral_current_a: number;
     phase_voltages_v: PhaseValues;
     line_voltages_v: PhaseValues;
     busbar_temperatures_c: PhaseValues;
     expected_temperatures_c: PhaseValues;
+    thermal_residual_k: number;
+    residual_z_score: number;
+    residual_anomaly_score: number;
+    residual_reference_samples: number;
     ambient_temperature_c: number;
     cold_surface_temperature_c: number;
     relative_humidity_pct: number;
@@ -76,4 +86,13 @@ export interface TrendPoint {
   expected: number;
   risk: number;
   humidity: number;
+}
+
+export interface NotificationRecord {
+  id: number;
+  panel_id: string;
+  channel: string;
+  severity: Severity;
+  message: string;
+  created_at: string;
 }

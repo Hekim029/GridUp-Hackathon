@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
+  <style>.t{font:700 34px Arial;fill:#0f172a}.s{font:17px Arial;fill:#475569}.h{font:700 18px Arial;fill:#0f172a}.b{font:15px Arial;fill:#334155}.board{fill:#e7f7ef;stroke:#166534;stroke-width:6}.zone{stroke-width:3}.hole{fill:white;stroke:#166534;stroke-width:3}.term{fill:#dbeafe;stroke:#2563eb;stroke-width:2}</style>
+  <rect width="1400" height="860" fill="white"/>
+  <text x="60" y="65" class="t">GridUp veri toplama karti kavramsal PCB yerlesimi</text>
+  <text x="60" y="98" class="s">Bolgesel yerlesim ve arayuz ayrimi - uretim/Gerber cizimi degildir</text>
+  <rect x="110" y="155" width="1030" height="580" rx="24" class="board"/>
+  <circle cx="150" cy="195" r="15" class="hole"/><circle cx="1100" cy="195" r="15" class="hole"/><circle cx="150" cy="695" r="15" class="hole"/><circle cx="1100" cy="695" r="15" class="hole"/>
+
+  <rect x="180" y="220" width="245" height="205" rx="12" fill="#fef3c7" stroke="#d97706" class="zone"/>
+  <text x="215" y="260" class="h">Guc bolgesi</text><text x="215" y="295" class="b">24 V terminal ve sigorta</text><text x="215" y="325" class="b">Giris koruma</text><text x="215" y="355" class="b">Izole DC/DC</text><text x="215" y="385" class="b">5 V ve 3,3 V regule hat</text>
+
+  <rect x="465" y="220" width="300" height="205" rx="12" fill="#eef2ff" stroke="#4f46e5" class="zone"/>
+  <text x="500" y="260" class="h">Mantik bolgesi</text><text x="500" y="295" class="b">MCU / watchdog</text><text x="500" y="325" class="b">Bellek ve servis basligi</text><text x="500" y="355" class="b">Durum LED'leri</text><text x="500" y="385" class="b">Firmware test noktalari</text>
+
+  <rect x="805" y="220" width="255" height="205" rx="12" fill="#ecfeff" stroke="#0891b2" class="zone"/>
+  <text x="840" y="260" class="h">Haberlesme bolgesi</text><text x="840" y="295" class="b">Izole RS-485</text><text x="840" y="325" class="b">A/B ve referans terminali</text><text x="840" y="355" class="b">Ag gecidi baglantisi</text><text x="840" y="385" class="b">Sonlandirma secimi</text>
+
+  <line x1="445" y1="195" x2="445" y2="695" stroke="#dc2626" stroke-width="4" stroke-dasharray="10 8"/>
+  <text x="360" y="680" class="b">Guc izolasyon siniri</text>
+  <line x1="785" y1="195" x2="785" y2="695" stroke="#dc2626" stroke-width="4" stroke-dasharray="10 8"/>
+  <text x="690" y="680" class="b">Saha I/O izolasyon siniri</text>
+
+  <rect x="180" y="495" width="880" height="125" rx="12" fill="#fff7ed" stroke="#ea580c" class="zone"/>
+  <text x="215" y="535" class="h">Analog on uc ve sensor terminalleri</text>
+  <text x="215" y="570" class="b">0-100 mA giris | T1/T2/T3 yuzey sicakligi | T/RH | HFCT 50 ohm on uc | yedek analog kanal</text>
+  <text x="215" y="600" class="b">Analog izler dijital ve RS-485 bolgesinden ayrilir. HFCT on ucu kart kenarina yakin tutulur.</text>
+
+  <g><rect x="205" y="175" width="45" height="24" class="term"/><rect x="270" y="175" width="45" height="24" class="term"/><rect x="875" y="175" width="45" height="24" class="term"/><rect x="940" y="175" width="45" height="24" class="term"/></g>
+  <text x="1180" y="210" class="h">Mekanik</text><text x="1180" y="245" class="b">DIN-ray muhafaza</text><text x="1180" y="275" class="b">Sokulebilir terminaller</text><text x="1180" y="305" class="b">Servis etiketi ve QR</text><text x="1180" y="335" class="b">Kablo cekme rahatligi</text>
+  <text x="1180" y="400" class="h">Uretim oncesi</text><text x="1180" y="435" class="b">Akım ve sicaklik butcesi</text><text x="1180" y="465" class="b">Izolasyon/EMC incelemesi</text><text x="1180" y="495" class="b">Terminal ve iz araliklari</text><text x="1180" y="525" class="b">Yetkin muhendis onayi</text>
+  <text x="110" y="790" class="s">Kart boyutu, izolasyon mesafeleri ve muhafaza sinifi saha sartlari ve secilecek parcalarla kesinlestirilir.</text>
+</svg>

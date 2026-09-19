@@ -15,6 +15,9 @@ Bu tablo yazılım doğrulaması ile cihaz/saha doğrulamasını ayırır. Yarı
 | HFCT aktivitesi | Bağımsız sentetik PD rampası | >53,33 pC seviyesinde `HFCT_INDICATOR` tetiklenir | Model iç tutarlılık kontrolü |
 | Yalnız algılamalı ark | TVOC detektör 3 aktif, röle pasif | PDU 210 bit2=1, PDU 212=0, PDU 1300 bit0=1, risk=100/Kritik | Kaynak register + jüri cevabı |
 | Kesici açtırmalı ark | TVOC detektör 3 ve K4 aktif | PDU 210 bit2=1, PDU 212 bit0=1, PDU 1300 bit0=1, risk=100/Kritik | Kaynak register + jüri cevabı |
+| Yarışma verisi replay | CSV'nin ilk satırı etkin | 53 mA × 6000 / 1000 = 318 A; profil 152 nokta | İstenen Veriler.xlsx |
+| Replay zaman ekseni | Profil son satırı | indeks 151, geçen süre 2265 dakika, saat 13:45 | İstenen Veriler.xlsx |
+| Residual ısınma | ≥12 normal örnek sonrası gevşek temas | Z-skoru ve istatistiksel skor yükselir; fiziksel artık riskte görünür | Açıklanabilir demo kuralı |
 | Risk seyrelmeme | Tek uzman skoru ≥80, diğerleri düşük | Birleşik skor en yüksek tekil skorun altına düşmez | Güvenlik değişmezi |
 | Fider nominal aşımı | Aktif fider akımı >400 A | `FEEDER_OVERLOAD` ve yük oranı >1 | Jüri cevabı + seçili DSYA varyantı |
 | MPR akım round-trip | PDU 6, CT=500 | Çözülen değer ile simülasyon farkı ≤0,25 A | Kaynak ölçek kontrolü |

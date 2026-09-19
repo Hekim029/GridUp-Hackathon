@@ -1,0 +1,12 @@
+group,item,quantity,prototype_choice,field_design_status,cost_status,source_or_reason
+mechanical,DIN-rail enclosure,1,concept only,to be selected after panel survey,quote required,physical module requirement
+power,24 V DC fused input,1,panel auxiliary supply,current budget and fuse coordination pending,existing panel resource,jury answer
+power,isolated 24 V to 5 V DC/DC,1,concept only,part selection pending,quote required,project design decision
+control,low-cost MCU,1,STM32 or ESP32 class,target not frozen,quote required,user proposal and conditional software requirement
+communication,RS-485 transceiver,1,MAX485 acceptable for bench prototype,isolated field interface pending,quote required,TVOC Modbus manual and user proposal
+communication,industrial modem or network gateway,1,existing industrial modem concept,site model pending,site supplied or quoted,jury answer and panel drawing
+analog,0-100 mA input front-end,1,protected shunt/filter/ADC,component values pending,quote required,requested current data format
+sensor,surface temperature channels,3,simulated in MVP,model and attachment method pending,quote required,challenge data selection
+sensor,temperature and humidity sensor,1,simulated in MVP,model pending,quote required,jury answer permits common market device
+sensor,HFCT30 or HFCT50 interface,1,simulated indicator,conductor fit and analyzer validation pending,quote required,provided HFCT datasheets
+integration,pluggable terminals and labeled harness,1 set,concept only,panel-specific harness pending,quote required,plug-and-play field requirement

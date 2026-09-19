@@ -1,3 +1,3 @@
-"""GridUp 1600 kVA AG pano dijital ikiz paketi."""
+"""GridUp 1600 kVA AG panel simulator package."""
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

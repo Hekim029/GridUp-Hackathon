@@ -64,6 +64,12 @@ PDU 212 trip rölesi ve GridUp özel mod bitleriyle yapılır.
 | 10011 | Ark algılandı, kesici açtırılmadı | 0/1 |
 | 10012 | Ark algılandı, kesici açtırıldı | 0/1 |
 | 10013 | Yardımcı besleme | `V × 10` |
+| 10014 | Termal artık | `(K + 50) × 10` |
+| 10015 | Residual Z-skoru | `z × 100` |
+| 10016 | Residual anomali skoru | `0-100 × 10` |
+| 10017 | Yarışma profili satır indeksi | `0-151` |
+| 10018 | Kaynak sekonder akımı | `mA × 10` |
+| 10019 | Profilde geçen süre | dakika |
 
 SCADA içe aktarımı/incelemesi için aynı bilgiler makine okunur
 [`modbus-map.csv`](modbus-map.csv) dosyasında verilmiştir.

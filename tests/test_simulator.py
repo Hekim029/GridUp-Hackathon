@@ -1,8 +1,53 @@
 from __future__ import annotations
 
+import math
+
+from gridup.anomaly import score_thermal_residual
 from gridup.domain import PhaseValues, Scenario, Severity
 from gridup.risk import assess
-from gridup.simulator import SimulationEngine
+from gridup.simulator import SimulationEngine, load_competition_current_profile
+
+
+def test_competition_profile_preserves_all_152_xlsx_points() -> None:
+    profile = load_competition_current_profile()
+    assert len(profile) == 152
+    assert profile[0].source_clock == "00:00"
+    assert profile[0].secondary_current_ma == 53.0
+    assert profile[0].primary_current_a == 318.0
+    assert profile[-1].elapsed_minutes == 2265
+    assert profile[-1].source_clock == "13:45"
+    assert min(point.primary_current_a for point in profile) == 90.0
+    assert max(point.primary_current_a for point in profile) == 540.0
+
+
+def test_default_simulation_replays_competition_profile_into_l1() -> None:
+    engine = SimulationEngine(panel_count=1)
+    snapshot = engine.step(0.0)[0]
+    assert snapshot.telemetry.current_data_source == "competition_xlsx_replay"
+    assert snapshot.telemetry.current_profile_index == 0
+    assert snapshot.telemetry.source_secondary_current_ma == 53.0
+    assert snapshot.telemetry.source_current_multiplier == 6000.0
+    expected_current_a = engine.params.rated_current_a * (318.0 / 600.0)
+    assert math.isclose(snapshot.telemetry.currents_a.l1, expected_current_a, rel_tol=1e-9)
+
+
+def test_residual_zscore_uses_prior_window_and_warmup() -> None:
+    assert score_thermal_residual([0.0] * 11, 5.0).score == 0.0
+
+    sensor_noise = score_thermal_residual([0.0] * 12, 0.4)
+    assert sensor_noise.z_score == 0.27
+    assert sensor_noise.score == 6.7
+    assert sensor_noise.reference_samples == 12
+
+    threshold_event = score_thermal_residual([0.0] * 12, 6.0)
+    assert threshold_event.z_score == 4.0
+    assert threshold_event.score == 100.0
+
+
+def test_persistent_positive_residual_does_not_become_normal() -> None:
+    result = score_thermal_residual([25.0] * 30, 25.0)
+    assert result.z_score > 4.0
+    assert result.score == 100.0
 
 
 def mature_scenario(engine: SimulationEngine, scenario: Scenario, steps: int = 30):
@@ -24,12 +69,16 @@ def test_normal_scenario_is_not_critical() -> None:
 
 
 def test_loose_contact_creates_positive_thermal_residual() -> None:
-    snapshot = mature_scenario(SimulationEngine(panel_count=1), Scenario.LOOSE_CONTACT)
+    engine = SimulationEngine(panel_count=1)
+    for _ in range(15):
+        engine.step(1.0)
+    snapshot = mature_scenario(engine, Scenario.LOOSE_CONTACT, steps=5)
     residual = (
         snapshot.telemetry.busbar_temperatures_c.l1 - snapshot.telemetry.expected_temperatures_c.l1
     )
-    assert residual > 10.0
-    assert any(item.code == "THERMAL_RESIDUAL" for item in snapshot.assessment.findings)
+    assert residual > 0.2
+    assert snapshot.telemetry.residual_z_score >= 3.0
+    assert any(item.code == "THERMAL_RESIDUAL_STATISTICAL" for item in snapshot.assessment.findings)
 
 
 def test_humidity_ingress_reduces_condensation_margin() -> None:

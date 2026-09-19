@@ -77,7 +77,7 @@ class SQLiteRepository:
                     (panel_id, channel, severity.value, message, created_at)
                     for channel in ("sms_simulated", "whatsapp_simulated")
                 )
-                logger.warning("Simüle alarm: %s", message)
+                logger.warning("Simulated notification dispatch: %s", message)
             self._last_severity[panel_id] = severity
 
         with self._connect() as connection:

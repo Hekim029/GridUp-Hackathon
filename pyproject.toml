@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gridup-digital-twin"
-version = "0.2.0"
+version = "0.3.0"
 description = "1600 kVA AG pano fizik tabanli dijital ikiz ve erken uyari prototipi"
 readme = "README.md"
 requires-python = ">=3.11"

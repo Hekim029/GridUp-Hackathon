@@ -6,7 +6,21 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class PanelPhysicalParameters:
-    # source: 1600kVA AG Pano Teknik Özellikleri.pdf
+    """Electromechanical and lumped thermal parameters for a 1600 kVA AG panel.
+
+    Specifications and Sources:
+    - Electrical Rating: 1600 kVA, 400 V line-to-line, 50 Hz.
+    - Busbars: Dual parallel copper bars, 2 x (100 x 10 mm²), compliant with TEDAŞ MYD.
+    - Current Transformers: 2500/5 A primary metering CT.
+    - Conductor Material: Electrolytic copper (rho_20 = 1.68e-8 Ohm*m, alpha = 0.0039 1/K).
+    - Thermal Lumped Model Assumptions:
+        - Effective joint conductor length: 1.0 m.
+        - Nominal bolting contact resistance: 2.0 micro-Ohms.
+        - Degraded/loose contact resistance: 80.0 micro-Ohms.
+        - Lumped busbar thermal capacitance (C_th): 15,000 J/K.
+        - Thermal dissipation resistance to cabinet ambient (R_th): 0.15 K/W.
+    """
+
     apparent_power_va: float = 1_600_000.0
     line_voltage_v: float = 400.0
     busbar_count_parallel: int = 2
@@ -15,11 +29,9 @@ class PanelPhysicalParameters:
     current_transformer_primary_a: float = 2500.0
     current_transformer_secondary_a: float = 5.0
 
-    # prior-plan physical constants; must remain visible and replaceable.
     copper_resistivity_20_ohm_m: float = 1.68e-8
     copper_temperature_coefficient_per_k: float = 0.0039
 
-    # model_assumption: source drawing does not specify the effective heated joint.
     effective_conductor_length_m: float = 1.0
     normal_contact_resistance_ohm: float = 2.0e-6
     loose_contact_resistance_ohm: float = 80.0e-6
@@ -28,19 +40,22 @@ class PanelPhysicalParameters:
 
     @property
     def rated_current_a(self) -> float:
+        """Nominal three-phase full load current: I_n = S / (sqrt(3) * V_line)."""
         return self.apparent_power_va / (math.sqrt(3.0) * self.line_voltage_v)
 
     @property
     def busbar_area_total_m2(self) -> float:
+        """Total cross-sectional conductor area across parallel busbars."""
         return self.busbar_count_parallel * self.busbar_width_m * self.busbar_thickness_m
 
     @property
     def ct_ratio(self) -> float:
+        """Main feeder current transformer turns ratio."""
         return self.current_transformer_primary_a / self.current_transformer_secondary_a
 
 
 def sensor_secondary_ma_to_primary_a(secondary_ma: float, primary_a: float = 600.0) -> float:
-    """İstenen Veriler.xlsx: 100 mA sekonderin 600 A primere karşılığı."""
+    """Linear scaling of current sensor secondary current (0-100 mA) to primary amps."""
     return secondary_ma * primary_a / 100.0
 
 
@@ -48,6 +63,7 @@ def copper_resistance_ohm(
     temperature_c: float,
     params: PanelPhysicalParameters,
 ) -> float:
+    """Calculate temperature-dependent bulk conductor resistance with linear alpha coefficient."""
     rho_t = params.copper_resistivity_20_ohm_m * (
         1.0 + params.copper_temperature_coefficient_per_k * (temperature_c - 20.0)
     )
@@ -62,7 +78,11 @@ def thermal_step_c(
     dt_seconds: float,
     params: PanelPhysicalParameters,
 ) -> float:
-    """Explicit Euler solution of C*dT/dt = I²R - (T-Ta)/Rth."""
+    """Solve the lumped first-order thermal differential equation via explicit Euler integration.
+
+    Governing Equation:
+        C_th * (dT / dt) = I^2 * (R_bulk(T) + R_contact) - (T - T_ambient) / R_th
+    """
     bulk = copper_resistance_ohm(temperature_c, params)
     heat_w = current_a**2 * (bulk + contact_resistance_ohm)
     cooling_w = (temperature_c - ambient_temperature_c) / params.thermal_resistance_k_per_w
@@ -71,10 +91,12 @@ def thermal_step_c(
 
 
 def saturation_vapor_pressure_hpa(temperature_c: float) -> float:
+    """Estimate saturation water vapor pressure using the Magnus-Tetens approximation."""
     return 6.112 * math.exp((17.67 * temperature_c) / (243.5 + temperature_c))
 
 
 def dew_point_c(temperature_c: float, relative_humidity_pct: float) -> float:
+    """Calculate thermodynamic dew point from dry-bulb temperature and relative humidity."""
     bounded_rh = min(max(relative_humidity_pct, 0.1), 100.0)
     vapor_pressure = saturation_vapor_pressure_hpa(temperature_c) * bounded_rh / 100.0
     log_term = math.log(vapor_pressure / 6.112)
@@ -82,7 +104,7 @@ def dew_point_c(temperature_c: float, relative_humidity_pct: float) -> float:
 
 
 def neutral_current_a(currents: tuple[float, float, float]) -> float:
-    """Fundamental-frequency phasor sum for phases separated by 120 degrees."""
+    """Compute fundamental-frequency neutral current via vector summation of 120-degree phasors."""
     i1, i2, i3 = currents
     x = i1 - 0.5 * i2 - 0.5 * i3
     y = (math.sqrt(3.0) / 2.0) * (i2 - i3)
@@ -94,6 +116,7 @@ def electrical_quantities(
     line_voltage_v: float,
     power_factor: float,
 ) -> tuple[float, float]:
+    """Calculate three-phase active power (W) and apparent power (VA)."""
     mean_current = sum(currents) / 3.0
     apparent_power = math.sqrt(3.0) * line_voltage_v * mean_current
     return apparent_power * power_factor, apparent_power

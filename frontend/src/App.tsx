@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { PanelMap } from "./components/PanelMap";
 import { PanelTwin } from "./components/PanelTwin";
+import { NotificationPanel } from "./components/NotificationPanel";
 import { SeverityBadge } from "./components/SeverityBadge";
 import { TrendChart } from "./components/TrendChart";
 import type { PanelSnapshot, Scenario, TrendPoint } from "./types";
@@ -124,6 +125,32 @@ export default function App() {
 
         <PanelMap panels={panels} selectedId={selected.telemetry.panel_id} onSelect={setSelectedId} />
 
+        <section className="card mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="eyebrow">Akım veri kaynağı</p>
+            <h2 className="text-lg font-semibold text-white">
+              Yarışma XLSX profili · 152 nokta · 15 dakika
+            </h2>
+            <p className="mt-1 text-xs text-slate-500">
+              Sentetik Akım Sensörü sayfası · L1 kaynak değeri I²R termal modele doğrudan girer
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-3 text-right text-sm">
+            <div>
+              <div className="text-xs text-slate-500">Replay noktası</div>
+              <div className="font-semibold text-white">
+                #{(t.current_profile_index ?? 0) + 1}/152 · {t.current_profile_clock ?? "—"}
+              </div>
+            </div>
+            <div>
+              <div className="text-xs text-slate-500">Kaynak dönüşümü</div>
+              <div className="font-semibold text-white">
+                {(t.source_secondary_current_ma ?? 0).toFixed(0)} mA × {(t.source_current_multiplier ?? 0).toFixed(0)}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="mt-5 grid gap-5 xl:grid-cols-[1.25fr_0.75fr]">
           <PanelTwin panel={selected} />
           <section className="card flex flex-col">
@@ -148,6 +175,10 @@ export default function App() {
               <Metric label="Yardımcı besleme" value={`${t.auxiliary_supply_v.toFixed(0)} V DC`} />
               <Metric label="Nötr akımı" value={`${t.neutral_current_a.toFixed(0)} A`} />
               <Metric label="HFCT gösterge" value={`${t.hfct_signal_mv.toFixed(1)} mV`} />
+              <Metric label="Termal artık" value={`${t.thermal_residual_k.toFixed(2)} K`} />
+              <Metric label="Residual Z-skoru" value={t.residual_z_score.toFixed(2)} />
+              <Metric label="İstatistiksel skor" value={`${t.residual_anomaly_score.toFixed(0)}/100`} />
+              <Metric label="Referans pencere" value={`${t.residual_reference_samples}/30`} />
             </div>
           </section>
         </div>
@@ -196,6 +227,8 @@ export default function App() {
             </div>
           </section>
         </div>
+
+        <NotificationPanel />
 
         <footer className="py-6 text-center text-xs text-slate-600">
           Eşikler ve ısıl parametreler saha verisiyle henüz kalibre edilmemiş demo varsayımlarıdır.

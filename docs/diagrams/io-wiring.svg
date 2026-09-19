@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="860" viewBox="0 0 1500 860">
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker><style>.t{font:700 34px Arial;fill:#0f172a}.s{font:17px Arial;fill:#475569}.h{font:700 18px Arial;fill:#0f172a}.b{font:15px Arial;fill:#334155}.m{fill:#ccfbf1;stroke:#0f766e;stroke-width:4}.src{fill:#f8fafc;stroke:#64748b;stroke-width:2}.term{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.line{fill:none;stroke:#334155;stroke-width:3;marker-end:url(#a)}</style></defs>
+  <rect width="1500" height="860" fill="white"/>
+  <text x="60" y="62" class="t">GridUp saha modulu I/O ve sensor kablolama krokisi</text>
+  <text x="60" y="94" class="s">Terminal gruplari kavramsaldir; nihai pin ve kablo numaralari PCB sematiginde dondurulur</text>
+
+  <rect x="610" y="145" width="340" height="610" rx="18" class="m"/>
+  <text x="695" y="185" class="h">GridUp DIN-ray modulu</text>
+  <g class="term">
+    <rect x="645" y="220" width="270" height="58" rx="6"/><rect x="645" y="300" width="270" height="58" rx="6"/><rect x="645" y="380" width="270" height="58" rx="6"/><rect x="645" y="460" width="270" height="58" rx="6"/><rect x="645" y="540" width="270" height="58" rx="6"/><rect x="645" y="620" width="270" height="58" rx="6"/>
+  </g>
+  <text x="670" y="255" class="h">X1  24 V DC / 0 V</text>
+  <text x="670" y="335" class="h">X2  0-100 mA / donus</text>
+  <text x="670" y="415" class="h">X3  T1 / T2 / T3</text>
+  <text x="670" y="495" class="h">X4  T/RH sensoru</text>
+  <text x="670" y="575" class="h">X5  HFCT koaksiyel</text>
+  <text x="670" y="655" class="h">X6  RS-485 B / A / ref</text>
+  <text x="695" y="718" class="b">X7 ag gecidi ve X8 servis kart kenarinda</text>
+
+  <rect x="80" y="190" width="330" height="100" rx="10" class="src"/><text x="115" y="230" class="h">Pano 24 V DC yardimci hat</text><text x="115" y="260" class="b">Sigortali terminal cikisi</text>
+  <rect x="80" y="330" width="330" height="100" rx="10" class="src"/><text x="115" y="370" class="h">Analog akim sensoru</text><text x="115" y="400" class="b">0-100 mA, 100 mA = 600 A</text>
+  <rect x="80" y="470" width="330" height="100" rx="10" class="src"/><text x="115" y="510" class="h">Yuzey ve ortam sensorleri</text><text x="115" y="540" class="b">T1/T2/T3 ile kabin T/RH</text>
+  <rect x="80" y="610" width="330" height="100" rx="10" class="src"/><text x="115" y="650" class="h">HFCT30 veya HFCT50</text><text x="115" y="680" class="b">Koaksiyel, 50 ohm on uca</text>
+
+  <path d="M410 240 L530 240 L530 249 L645 249" class="line"/>
+  <path d="M410 380 L545 380 L545 329 L645 329" class="line"/>
+  <path d="M410 520 L560 520 L560 409 L645 409" class="line"/>
+  <path d="M410 540 L575 540 L575 489 L645 489" class="line"/>
+  <path d="M410 660 L590 660 L590 569 L645 569" class="line"/>
+
+  <rect x="1080" y="235" width="330" height="110" rx="10" class="src"/><text x="1115" y="275" class="h">MPR-53CS</text><text x="1115" y="305" class="b">Modbus RTU olcum verileri</text>
+  <rect x="1080" y="405" width="330" height="110" rx="10" class="src"/><text x="1115" y="445" class="h">TVOC-2-COM</text><text x="1115" y="475" class="b">Detektor, active trip ve role bitleri</text>
+  <rect x="1080" y="575" width="330" height="110" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2"/><text x="1115" y="615" class="h">Endustriyel modem / SCADA</text><text x="1115" y="645" class="b">Merkezi on-premise veri yolu</text>
+  <path d="M1080 290 L1010 290 L1010 639 L915 639" class="line"/>
+  <path d="M1080 460 L1030 460 L1030 659 L915 659" class="line"/>
+  <path d="M950 700 L1010 700 L1010 630 L1080 630" class="line"/>
+
+  <text x="60" y="810" class="s">TVOC trip cikislari bu karttan gecmez. Izleme modulu yalniz veri okur ve raporlar.</text>
+</svg>

@@ -31,3 +31,10 @@ async def test_api_lifecycle_without_modbus(monkeypatch, tmp_path) -> None:
         assert config.json()["panel"]["rated_current_a"] > 2300
         assert config.json()["hardware"]["primary_power"] == "panel_auxiliary_24_v_dc"
         assert config.json()["hardware"]["wireless_required"] is False
+        assert config.json()["simulation"]["current_source"] == "competition_xlsx_replay"
+        assert config.json()["simulation"]["current_profile_points"] == 152
+
+        profile = await client.get("/api/v1/current-profile")
+        assert profile.status_code == 200
+        assert len(profile.json()) == 152
+        assert profile.json()[0]["primary_current_a"] == 318.0
