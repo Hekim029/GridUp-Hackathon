@@ -53,7 +53,7 @@ cd frontend && npm run build
 
 ## Kaynak ve varsayım disiplini
 
-Kod içindeki her sayısal değer `source`, `derived` veya `model_assumption` olarak sınıflandırılmıştır. Gerçek etiketli arıza verisi gizlilik nedeniyle paylaşılmadığından bu sürüm doğruluk, duyarlılık veya F1 iddiasında bulunamaz. Yarışma dosyalarının vermediği temas direnci, ısıl kapasite, ısıl direnç ve alarm eşikleri **kalibre edilmemiş model varsayımıdır**.
+Kod içindeki her sayısal değer `source`, `derived` veya `model_assumption` olarak sınıflandırılmıştır. Gerçek etiketli arıza verisi gizlilik nedeni ile paylaşılmadığından bu sürüm doğruluk, duyarlılık veya F1 iddiasında bulunamaz. Yarışma dosyalarının vermediği temas direnci, ısıl kapasite, ısıl direnç ve alarm eşikleri **kalibre edilmemiş model varsayımıdır**.
 
 Teslimlerin tamamı [uygunluk matrisi](docs/deliverable-compliance.md) içinde izlenir. Donanım tarafı için [fiziksel modül](docs/physical-module-design.md), [elektronik tasarım](docs/electronic-design.md), [BOM](docs/bom.csv) ve [saha FMEA](docs/field-deployment-fmea.md); yazılım için [mimari](docs/software-architecture.md), [register haritası](docs/register-map.md), [SCADA eşleme tablosu](docs/modbus-map.csv) ve [kabul testleri](docs/acceptance-tests.md) sağlanmıştır. Final gösterimi [demo çalışma planını](docs/demo-runbook.md) izler.
 
